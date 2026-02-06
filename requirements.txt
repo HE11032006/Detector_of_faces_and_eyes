@@ -1,0 +1,7 @@
+# Dépendances nécessaires pour le détecteur de visages
+opencv-python>=4.5.5
+numpy>=1.19.0
+imutils>=0.5.4
+# (Optionnel) pillow pour opérations d'images supplémentaires
+Pillow>=8.0.0
+

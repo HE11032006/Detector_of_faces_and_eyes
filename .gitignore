@@ -1,0 +1,21 @@
+# ajout de ce qui ne faut pas ajouter
+.idea/
+*.iml
+# les fichiers de build
+/build/
+/target/
+# les fichiers de log
+*.log
+# les fichiers de dépendances
+*.jar
+*.war
+*.ear
+# les fichiers de cache
+.cache/
+# les fichiers de test
+*.test
+# les fichiers de documentation
+.venv/
+.vscode/
+.DS_Store
+  
