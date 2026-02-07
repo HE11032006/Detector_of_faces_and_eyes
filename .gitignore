@@ -1,6 +1,8 @@
 # ajout de ce qui ne faut pas ajouter
 .idea/
 *.iml
+__pycache__/
+
 # les fichiers de build
 /build/
 /target/
