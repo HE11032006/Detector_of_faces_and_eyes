@@ -1,30 +1,36 @@
 import cv2 as cv
+import mediapipe as mp
 
-face_cascade = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
+# Initialiser MediaPipe
+face_detection = mp.solutions.face_detection
+dessin= mp.solutions.drawing_utils
 
 # charger les images
 img = cv.imread('Two_face0.jpg')
+if img is None:
+    raise IOError("Impossible de charger l'image. Vérifiez le chemin d'accès.")
 
-# Convertir en niveaux de gris
-gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+# Detection des visages avce mediapipe
+with face_detection.FaceDetection(min_detection_confidence=0.5) as face_detection:
+    # Convertir l'image en RGB pour MediaPipe
+    img_rgb = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+    results = face_detection.process(img_rgb)
 
-#execution de la detection de visage
-# detectMultiScale(image, scaleFactor, minNeighbors)
-faces = face_cascade.detectMultiScale(gray, 1.1, 5, minSize=(30, 30))
+    if results.detections:
+        print(f"Nombre de visages détectés : {len(results.detections)}")
+        for detection in results.detections:
+            print(detection)
+            dessin.draw_detection(img, detection)
 
-print(f"Nombre de visages détectés : {len(faces)}")
+            #afficher les coordonnées du visage
+            box = detection.location_data.relative_bounding_box
+            h, w, _ = img.shape
+            x = int(box.xmin * w)
+            y = int(box.ymin * h)
+            width = int(box.width * w)
+            height = int(box.height * h)
+            print(f"Position : x={x}, y={y}, largeur={width}, hauteur={height}")
+    else:
+        print("Aucun visage détecté avec MediaPipe.")
 
-# affichage des visages detectes
-for face in faces:
-    print(face)
 
-for (x, y, w, h)  in faces:
-    print(f"Position : x={x}, y={y}, largeur={w}, hauteur={h}")
-
-    # dessiner le rectangle autour du visage
-    cv.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-# afficher l'image principale
-cv.imshow('Image principale', img)
-cv.waitKey(0)
-cv.destroyAllWindows()
